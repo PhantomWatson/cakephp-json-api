@@ -2,3 +2,4 @@
 /logs/
 /tmp/
 composer.lock
+/.idea/*
