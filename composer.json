@@ -1,10 +1,13 @@
 {
-    "name": "josbeir/cakephp-json-api",
+    "name": "phantomwatson/cakephp-json-api",
     "description": "json-api specification plugin for CakePHP - http://jsonapi.org/",
     "type": "cakephp-plugin",
     "keywords": [ "cakephp", "json", "jsonapi" ],
     "license": "MIT",
     "authors": [
+        {
+            "name": "Graham Watson"
+        },
         {
             "name": "Jasper Smet",
             "homepage": "https://github.com/josbeir/cakephp-jsonapi/graphs/contributors"
