@@ -13,7 +13,6 @@ use JsonApi\View\Exception\MissingViewVarException;
 use Neomerx\JsonApi\Encoder\Encoder;
 use Neomerx\JsonApi\Encoder\EncoderOptions;
 use Neomerx\JsonApi\Parameters\EncodingParameters;
-use Neomerx\JsonApi\Schema\Link;
 
 class JsonApiView extends View
 {
