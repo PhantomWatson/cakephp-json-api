@@ -4,8 +4,8 @@ namespace JsonApi\View;
 use Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Event\EventManager;
-use Cake\Network\Request;
-use Cake\Network\Response;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 use Cake\ORM\Exception\MissingEntityException;
 use Cake\Utility\Hash;
 use Cake\View\View;
@@ -37,13 +37,13 @@ class JsonApiView extends View
     /**
      * Constructor
      *
-     * @param \Cake\Network\Request $request Request instance.
-     * @param \Cake\Network\Response $response Response instance.
+     * @param \Cake\Http\ServerRequest $request Request instance.
+     * @param \Cake\Http\Response $response Response instance.
      * @param \Cake\Event\EventManager $eventManager EventManager instance.
      * @param array $viewOptions An array of view options
      */
     public function __construct(
-        Request $request = null,
+        ServerRequest $request = null,
         Response $response = null,
         EventManager $eventManager = null,
         array $viewOptions = []
