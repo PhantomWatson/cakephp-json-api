@@ -49,8 +49,8 @@ class JsonApiView extends View
     ) {
         parent::__construct($request, $response, $eventManager, $viewOptions);
 
-        if ($response && $response instanceof Response) {
-            $response = $response->withType('jsonapi');
+        if ($this->response && $this->response instanceof Response) {
+            $this->response = $this->response->withType('jsonapi');
         }
     }
 
