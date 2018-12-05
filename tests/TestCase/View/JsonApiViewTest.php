@@ -2,8 +2,8 @@
 namespace JsonApi\Test\TestCase\View;
 
 use Cake\Controller\Controller;
-use Cake\Network\Request;
-use Cake\Network\Response;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Neomerx\JsonApi\Schema\Link;
@@ -22,7 +22,7 @@ class JsonApiViewTest extends TestCase
 
     protected function _getView($viewVars = [])
     {
-        $Request = new Request();
+        $Request = new ServerRequest();
         $Response = new Response();
         $Controller = new Controller($Request, $Response);
 
