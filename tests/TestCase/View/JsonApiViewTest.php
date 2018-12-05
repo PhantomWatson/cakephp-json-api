@@ -4,8 +4,10 @@ namespace JsonApi\Test\TestCase\View;
 use Cake\Controller\Controller;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
+use Cake\ORM\Exception\MissingEntityException;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use JsonApi\View\Exception\MissingViewVarException;
 use Neomerx\JsonApi\Schema\Link;
 
 class JsonApiViewTest extends TestCase
@@ -27,7 +29,7 @@ class JsonApiViewTest extends TestCase
         $Controller = new Controller($Request, $Response);
 
         $builder = $Controller->viewBuilder();
-        $builder->className('JsonApi\View\JsonApiView');
+        $builder->setClassName('JsonApi\View\JsonApiView');
 
         if ($viewVars) {
             $Controller->set($viewVars);
@@ -42,7 +44,7 @@ class JsonApiViewTest extends TestCase
      */
     public function testRenderUsingBaseSchema()
     {
-        $records = TableRegistry::get('Articles')->find()->all();
+        $records = TableRegistry::getTableLocator()->get('Articles')->find()->all();
 
         $view = $this->_getView([
             'articles' => $records,
@@ -65,7 +67,7 @@ class JsonApiViewTest extends TestCase
      */
     public function testRenderUsingCustomSchema()
     {
-        $records = TableRegistry::get('Authors')->find()
+        $records = TableRegistry::getTableLocator()->get('Authors')->find()
             ->contain(['Articles'])
             ->all();
 
@@ -88,7 +90,7 @@ class JsonApiViewTest extends TestCase
 
     public function testViewResponse()
     {
-        $records = TableRegistry::get('Articles')->find()->all();
+        $records = TableRegistry::getTableLocator()->get('Articles')->find()->all();
 
         $view = $this->_getView([
             'articles' => $records,
@@ -98,7 +100,7 @@ class JsonApiViewTest extends TestCase
 
         $output = $view->render();
 
-        $this->assertSame('application/vnd.api+json', $view->response->type());
+        $this->assertSame('application/vnd.api+json', $view->response->getType());
     }
 
     /**
@@ -107,7 +109,7 @@ class JsonApiViewTest extends TestCase
      */
     public function testEncodeWithIncludeAndFieldSet()
     {
-        $records = TableRegistry::get('Authors')->find()
+        $records = TableRegistry::getTableLocator()->get('Authors')->find()
             ->contain(['Articles'])
             ->all();
 
@@ -159,7 +161,7 @@ class JsonApiViewTest extends TestCase
 
     public function testResponseWithLinksAndMeta()
     {
-        $records = TableRegistry::get('Articles')->find()->all();
+        $records = TableRegistry::getTableLocator()->get('Articles')->find()->all();
 
         $expectedMeta = [
             'meta' => 'data'
@@ -203,7 +205,7 @@ class JsonApiViewTest extends TestCase
 
     public function testDataToSerialize()
     {
-        $records = TableRegistry::get('Articles')->find()->all();
+        $records = TableRegistry::getTableLocator()->get('Articles')->find()->all();
 
         $view = $this->_getView([
             'articles' => $records,
@@ -232,7 +234,7 @@ class JsonApiViewTest extends TestCase
 
     public function testDataToSerializeAssertSerializeValueNotAssigned()
     {
-        $records = TableRegistry::get('Articles')->find()->all();
+        $records = TableRegistry::getTableLocator()->get('Articles')->find()->all();
 
         $view = $this->_getView([
             'articles' => $records,
@@ -248,7 +250,7 @@ class JsonApiViewTest extends TestCase
     public function testDataToSerializeAssertSerializingObjectsStillWorks()
     {
         $restore = error_reporting(E_ALL & ~E_USER_DEPRECATED);
-        $records = TableRegistry::get('Articles')->find()->all();
+        $records = TableRegistry::getTableLocator()->get('Articles')->find()->all();
 
         $view = $this->_getView([
             '_entities' => ['Article'],
@@ -295,7 +297,7 @@ class JsonApiViewTest extends TestCase
 
     public function testEmptyEntitiesViewVarException()
     {
-        $this->setExpectedException('JsonApi\View\Exception\MissingViewVarException');
+        $this->expectException(MissingViewVarException::class);
 
         $view = $this->_getView([
             '_entities' => []
@@ -306,7 +308,7 @@ class JsonApiViewTest extends TestCase
 
     public function testUndefinedEntitiesViewVarException()
     {
-        $this->setExpectedException('JsonApi\View\Exception\MissingViewVarException');
+        $this->expectException(MissingViewVarException::class);
 
         $view = $this->_getView();
 
@@ -315,7 +317,7 @@ class JsonApiViewTest extends TestCase
 
     public function testEntityNotFoundException()
     {
-        $this->setExpectedException('Cake\ORM\Exception\MissingEntityException');
+        $this->expectException(MissingEntityException::class);
 
         $view = $this->_getView([
             '_entities' => ['FakeEntity']
