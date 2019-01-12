@@ -8,7 +8,8 @@ use Cake\ORM\Exception\MissingEntityException;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use JsonApi\View\Exception\MissingViewVarException;
-use Neomerx\JsonApi\Schema\Link;
+use Neomerx\JsonApi\Document\Link;
+//use Neomerx\JsonApi\Schema\Link;
 
 class JsonApiViewTest extends TestCase
 {
@@ -100,7 +101,7 @@ class JsonApiViewTest extends TestCase
 
         $output = $view->render();
 
-        $this->assertSame('application/vnd.api+json', $view->response->getType());
+        $this->assertSame('application/vnd.api+json', $view->getResponse()->getType());
     }
 
     /**

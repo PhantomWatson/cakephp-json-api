@@ -12,7 +12,7 @@ use Cake\View\View;
 use JsonApi\View\Exception\MissingViewVarException;
 use Neomerx\JsonApi\Encoder\Encoder;
 use Neomerx\JsonApi\Encoder\EncoderOptions;
-use Neomerx\JsonApi\Parameters\EncodingParameters;
+use Neomerx\JsonApi\Encoder\Parameters\EncodingParameters;
 
 class JsonApiView extends View
 {
@@ -84,8 +84,8 @@ class JsonApiView extends View
                 $schemaClass = App::className('JsonApi.Entity', 'View\Schema', 'Schema');
             }
 
-            $schema = function ($factory, $container) use ($schemaClass, $entityName) {
-                return new $schemaClass($factory, $container, $this, $entityName);
+            $schema = function ($factory) use ($schemaClass, $entityName) {
+                return new $schemaClass($factory, $this, $entityName);
             };
 
             $schemas[$entityclass] = $schema;

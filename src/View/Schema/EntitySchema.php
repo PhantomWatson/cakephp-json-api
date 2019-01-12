@@ -1,14 +1,12 @@
 <?php
 namespace JsonApi\View\Schema;
 
-use Cake\ORM\Entity;
 use Cake\Utility\Inflector;
 use Cake\View\View;
-use Neomerx\JsonApi\Contracts\Schema\ContainerInterface;
 use Neomerx\JsonApi\Contracts\Schema\SchemaFactoryInterface;
-use Neomerx\JsonApi\Schema\SchemaProvider;
+use Neomerx\JsonApi\Schema\BaseSchema;
 
-class EntitySchema extends SchemaProvider
+class EntitySchema extends BaseSchema
 {
     /**
      * The default field used for an id
@@ -25,14 +23,12 @@ class EntitySchema extends SchemaProvider
     /**
      * Class constructor
      *
-     * @param Neomerx\JsonApi\Contracts\Schema\ContainerInterface $factory ContainerInterface
      * @param Neomerx\JsonApi\Contracts\Schema\SchemaFactoryInterface $container SchemaFactoryInterface
      * @param Cake\View\View $view Instance of the cake view we are rendering this in
      * @param string $entityName Name of the entity this schema is for
      */
     public function __construct(
         SchemaFactoryInterface $factory,
-        ContainerInterface $container,
         View $view,
         $entityName
     ) {
@@ -42,7 +38,7 @@ class EntitySchema extends SchemaProvider
             $this->resourceType = strtolower(Inflector::pluralize($entityName));
         }
 
-        parent::__construct($factory, $container);
+        parent::__construct($factory); //$container
     }
 
     /**
@@ -62,7 +58,7 @@ class EntitySchema extends SchemaProvider
      * @param \Cake\ORM\Entity $resource Entity resource
      * @return string
      */
-    public function getId($resource)
+    public function getId($resource): ?string
     {
         return (string)$resource->get($this->idField);
     }
@@ -71,9 +67,10 @@ class EntitySchema extends SchemaProvider
      * Get resource attributes.
      *
      * @param \Cake\ORM\Entity $resource Entity resource
+     * @param array|null $fieldKeysFilter
      * @return array
      */
-    public function getAttributes($resource)
+    public function getAttributes($resource, array $fieldKeysFilter = null): ?array
     {
         if ($resource->has($this->idField)) {
             $hidden = array_merge($resource->getHidden(), [$this->idField]);

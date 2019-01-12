@@ -5,12 +5,12 @@ use JsonApi\View\Schema\EntitySchema;
 
 class AuthorSchema extends EntitySchema
 {
-    public function getId($entity)
+    public function getId($entity): ?string
     {
         return $entity->get('id');
     }
 
-    public function getAttributes($entity)
+    public function getAttributes($entity, array $fieldKeysFilter = null): ?array
     {
         return [
             'title' => $entity->title,
@@ -19,7 +19,7 @@ class AuthorSchema extends EntitySchema
         ];
     }
 
-    public function getRelationships($entity, array $includeRelationships = [])
+    public function getRelationships($entity, bool $isPrimary, array $includeRelationships): ?array
     {
         return [
             'articles' => [
