@@ -14,8 +14,8 @@ use Neomerx\JsonApi\Document\Link;
 class JsonApiViewTest extends TestCase
 {
     public $fixtures = [
-        'core.articles',
-        'core.authors'
+        'core.Articles',
+        'core.Authors'
     ];
 
     public function setUp()
