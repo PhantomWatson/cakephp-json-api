@@ -19,7 +19,7 @@
     },
     "require": {
         "php": ">=7.1",
-        "cakephp/cakephp": "~3.0",
+        "cakephp/cakephp": "3.*|4.*",
         "neomerx/json-api": "^2.0",
         "ext-json": "*",
         "ext-mbstring": "*"

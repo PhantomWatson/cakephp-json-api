@@ -1,4 +1,4 @@
-# json-api plugin for CakePHP 3
+# json-api plugin for CakePHP 3 or 4
 
 ![json:api](http://jsonapi.org/images/jsonapi.png)
 
