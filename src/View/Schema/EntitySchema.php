@@ -3,10 +3,10 @@ namespace JsonApi\View\Schema;
 
 use Cake\Utility\Inflector;
 use Cake\View\View;
-use Neomerx\JsonApi\Contracts\Schema\SchemaFactoryInterface;
+use Neomerx\JsonApi\Contracts\Factories\FactoryInterface;
 use Neomerx\JsonApi\Schema\BaseSchema;
 
-class EntitySchema extends BaseSchema
+abstract class EntitySchema extends BaseSchema
 {
     /**
      * The default field used for an id
@@ -28,7 +28,7 @@ class EntitySchema extends BaseSchema
      * @param string $entityName Name of the entity this schema is for
      */
     public function __construct(
-        SchemaFactoryInterface $factory,
+        FactoryInterface $factory,
         View $view,
         $entityName
     ) {
