@@ -4,6 +4,7 @@ namespace JsonApi\View\Schema;
 use Cake\Utility\Inflector;
 use Cake\View\View;
 use Neomerx\JsonApi\Contracts\Factories\FactoryInterface;
+use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 use Neomerx\JsonApi\Schema\BaseSchema;
 
 abstract class EntitySchema extends BaseSchema
@@ -67,10 +68,10 @@ abstract class EntitySchema extends BaseSchema
      * Get resource attributes.
      *
      * @param \Cake\ORM\Entity $resource Entity resource
-     * @param array|null $fieldKeysFilter
+     * @param ContextInterface $context
      * @return array
      */
-    public function getAttributes($resource, array $fieldKeysFilter = null): ?array
+    public function getAttributes($resource, ContextInterface $context): iterable
     {
         if ($resource->has($this->idField)) {
             $hidden = array_merge($resource->getHidden(), [$this->idField]);
