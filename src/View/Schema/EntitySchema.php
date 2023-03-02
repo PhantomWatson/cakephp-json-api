@@ -17,14 +17,14 @@ abstract class EntitySchema extends BaseSchema
 
     /**
      * Holds the instance of Cake\View\View
-     * @var Cake\View\View
+     * @var \Cake\View\View
      */
     protected $_view;
 
     /**
      * Class constructor
      *
-     * @param \Neomerx\JsonApi\Contracts\Schema\SchemaFactoryInterface $container SchemaFactoryInterface
+     * @param \Neomerx\JsonApi\Contracts\Factories\FactoryInterface $container SchemaFactoryInterface
      * @param \Cake\View\View $view Instance of the cake view we are rendering this in
      * @param string $entityName Name of the entity this schema is for
      */
