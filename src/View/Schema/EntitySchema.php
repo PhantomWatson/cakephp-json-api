@@ -23,8 +23,8 @@ abstract class EntitySchema extends BaseSchema
     /**
      * Class constructor
      *
-     * @param Neomerx\JsonApi\Contracts\Schema\SchemaFactoryInterface $container SchemaFactoryInterface
-     * @param Cake\View\View $view Instance of the cake view we are rendering this in
+     * @param \Neomerx\JsonApi\Contracts\Schema\SchemaFactoryInterface $container SchemaFactoryInterface
+     * @param \Cake\View\View $view Instance of the cake view we are rendering this in
      * @param string $entityName Name of the entity this schema is for
      */
     public function __construct(
@@ -83,7 +83,7 @@ abstract class EntitySchema extends BaseSchema
     /**
      * Return the view instance
      *
-     * @return Cake\View\View View instance
+     * @return \Cake\View\View View instance
      */
     public function getView()
     {
