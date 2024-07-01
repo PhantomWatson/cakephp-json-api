@@ -119,12 +119,12 @@ class JsonApiView extends View
      * ]);
      * ```
      *
-     * @param string|null $view Name of view file to use
+     * @param string|null $template Name of view file to use
      * @param string|null $layout Layout to use.
      * @return string The serialized data
      * @throws MissingViewVarException when required view variable was not set
      */
-    public function render($view = null, $layout = null)
+    public function render(?string $template = null, $layout = null): string
     {
         $include = $fieldsets = $schemas = $links = $meta = [];
         $parameters = $serialize = $url = null;
