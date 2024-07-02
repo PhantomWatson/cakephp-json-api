@@ -11,8 +11,6 @@ use Cake\Utility\Hash;
 use Cake\View\View;
 use JsonApi\View\Exception\MissingViewVarException;
 use Neomerx\JsonApi\Encoder\Encoder;
-use Neomerx\JsonApi\Encoder\EncoderOptions;
-use Neomerx\JsonApi\Encoder\Parameters\EncodingParameters;
 
 class JsonApiView extends View
 {
@@ -126,61 +124,46 @@ class JsonApiView extends View
      */
     public function render(?string $template = null, $layout = null): string
     {
-        $include = $fieldsets = $schemas = $links = $meta = [];
-        $parameters = $serialize = $url = null;
-        $jsonOptions = $this->_jsonOptions();
-
-        if (isset($this->viewVars['_url'])) {
-            $url = rtrim($this->viewVars['_url'], '/');
-        }
-
         if (isset($this->viewVars['_entities'])) {
             $schemas = $this->_entitiesToSchema($this->viewVars['_entities']);
         } else {
             throw new MissingViewVarException(['_entities']);
         }
 
-        if (isset($this->viewVars['_include'])) {
-            $include = $this->viewVars['_include'];
-        }
+        $encoder = Encoder::instance($schemas);
 
-        if (isset($this->viewVars['_fieldsets'])) {
-            $fieldsets = $this->viewVars['_fieldsets'];
+        $encoder->withEncodeOptions($this->getJsonOptions());
+
+        if (isset($this->viewVars['_url'])) {
+            $url = rtrim($this->viewVars['_url'], '/');
+            $encoder->withUrlPrefix($url);
         }
 
         if (isset($this->viewVars['_links'])) {
-            $links = $this->viewVars['_links'];
+            $encoder->withLinks($this->viewVars['_links']);
         }
+
+        $serialize = $this->viewVars['_serialize'] ?? false !== false
+            ? $this->_dataToSerialize($this->viewVars['_serialize'])
+            : null;
 
         if (isset($this->viewVars['_meta'])) {
-            $meta = $this->viewVars['_meta'];
-        }
-
-//        if (isset($this->viewVars['_serialize'])) {
-//            $serialize = $this->viewVars['_serialize'];
-//        }
-        if (isset($this->viewVars['_serialize']) && $this->viewVars['_serialize'] !== false) {
-            $serialize = $this->_dataToSerialize($this->viewVars['_serialize']);
-        }
-
-        $encoderOptions = new EncoderOptions($jsonOptions, $url);
-        $encoder = Encoder::instance($schemas, $encoderOptions);
-
-        if ($links) {
-            $encoder->withLinks($links);
-        }
-
-        if ($meta) {
             if (empty($serialize)) {
-                return $encoder->encodeMeta($meta);
+                return $encoder->encodeMeta($this->viewVars['_meta']);
             }
 
-            $encoder->withMeta($meta);
+            $encoder->withMeta($this->viewVars['_meta']);
         }
 
-        $parameters = new EncodingParameters($include, $fieldsets);
+        if (isset($this->viewVars['_fieldsets'])) {
+            $encoder->withFieldsets($this->viewVars['_fieldsets']);
+        }
 
-        return $encoder->encodeData($serialize, $parameters);
+        if (isset($this->viewVars['_include'])) {
+            $encoder->withIncludedPaths((array)$this->viewVars['_include']);
+        }
+
+        return $encoder->encodeData($serialize);
     }
 
     /**
@@ -227,7 +210,7 @@ class JsonApiView extends View
      *
      * @return int json option constant
      */
-    protected function _jsonOptions()
+    protected function getJsonOptions()
     {
         $jsonOptions = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT;
         if (isset($this->viewVars['_jsonOptions'])) {
