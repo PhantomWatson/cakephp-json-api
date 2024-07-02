@@ -22,6 +22,11 @@ abstract class EntitySchema extends BaseSchema
     protected $_view;
 
     /**
+     * @var string
+     */
+    public $resourceType;
+
+    /**
      * Class constructor
      *
      * @param \Neomerx\JsonApi\Contracts\Factories\FactoryInterface $container SchemaFactoryInterface
