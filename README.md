@@ -1,4 +1,4 @@
-# json-api plugin for CakePHP 4
+# json-api plugin for CakePHP 5
 
 ![json:api](http://jsonapi.org/images/jsonapi.png)
 
@@ -66,7 +66,7 @@ public function initialize()
 		'Article',
 		'Author'
 	]);
-	
+
 	$this->set('_url', Router::url('/api', true));
 	$this->set('_meta', ['some' => 'global metadata']);
 	$this->set('_links', [ // uses Neomerx\JsonApi\Schema\Link
