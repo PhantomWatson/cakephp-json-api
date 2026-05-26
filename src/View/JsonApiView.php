@@ -26,7 +26,6 @@ class JsonApiView extends View
         '_fieldsets',
         '_links',
         '_meta',
-        '_serialize',
         '_jsonOptions',
         '_jsonp'
     ];
@@ -96,7 +95,7 @@ class JsonApiView extends View
      * Serialize view vars
      *
      * ### Special parameters
-     * `_serialize` This holds the actual data to pass to the encoder
+     * `serialize` (view builder option) This holds the actual data to pass to the encoder
      * `_url` The base url of the api endpoint
      * `_entities` A list of entitites that are going to be mapped to Schemas
      * `_include` An array of hash paths of what should be in the 'included'
@@ -143,8 +142,9 @@ class JsonApiView extends View
             $encoder->withLinks($this->viewVars['_links']);
         }
 
-        $serialize = $this->viewVars['_serialize'] ?? false !== false
-            ? $this->_dataToSerialize($this->viewVars['_serialize'])
+        $serializeOption = $this->getConfig('serialize');
+        $serialize = $serializeOption !== null
+            ? $this->_dataToSerialize($serializeOption)
             : null;
 
         if (isset($this->viewVars['_meta'])) {
@@ -189,7 +189,7 @@ class JsonApiView extends View
         }
 
         if (is_object($serialize)) {
-            trigger_error('Assigning and object to "_serialize" is deprecated, assign the object to its own variable and assign "_serialize" = true instead.', E_USER_DEPRECATED);
+            trigger_error('Assigning an object to the "serialize" option is deprecated; assign the object to a view variable and set the "serialize" option to true instead.', E_USER_DEPRECATED);
 
             return $serialize;
         }

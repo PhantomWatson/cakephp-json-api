@@ -23,7 +23,7 @@ class JsonApiViewTest extends TestCase
         parent::setUp();
     }
 
-    protected function _getView($viewVars = [])
+    protected function _getView($viewVars = [], $viewOptions = [])
     {
         $Request = new ServerRequest();
         $Response = new Response();
@@ -31,6 +31,10 @@ class JsonApiViewTest extends TestCase
 
         $builder = $Controller->viewBuilder();
         $builder->setClassName('JsonApi\View\JsonApiView');
+
+        foreach ($viewOptions as $key => $value) {
+            $builder->setOption($key, $value);
+        }
 
         if ($viewVars) {
             $Controller->set($viewVars);
@@ -53,8 +57,7 @@ class JsonApiViewTest extends TestCase
             '_entities' => [
                 'Article'
             ],
-            '_serialize' => true
-        ]);
+        ], ['serialize' => true]);
 
         $this->assertJsonStringEqualsJsonFile(
             ROOT . DS . 'tests' . DS . 'Fixture' . DS . 'articles.json',
@@ -75,13 +78,12 @@ class JsonApiViewTest extends TestCase
 
         $view = $this->_getView([
             'author' => $records,
-            '_serialize' => true,
             '_url' => 'http://localhost',
             '_entities' => [
                 'Author',
                 'Article'
-            ]
-        ]);
+            ],
+        ], ['serialize' => true]);
 
         $this->assertJsonStringEqualsJsonFile(
             ROOT . DS . 'tests' . DS . 'Fixture' . DS . 'authors.json',
@@ -96,8 +98,7 @@ class JsonApiViewTest extends TestCase
         $view = $this->_getView([
             'articles' => $records,
             '_entities' => ['Article'],
-            '_serialize' => true
-        ]);
+        ], ['serialize' => true]);
 
         $output = $view->render();
 
@@ -121,10 +122,9 @@ class JsonApiViewTest extends TestCase
                 'Author',
                 'Article'
             ],
-            '_serialize' => true,
             '_include' => ['articles'],
-            '_fieldsets' => ['articles' => ['title']]
-        ]);
+            '_fieldsets' => ['articles' => ['title']],
+        ], ['serialize' => true]);
 
         $output = $view->render();
         $output = json_decode($output, true);
@@ -174,7 +174,6 @@ class JsonApiViewTest extends TestCase
             '_entities' => [
                 'Article'
             ],
-            '_serialize' => true,
             '_meta' => $expectedMeta,
             '_links' => [
                 Link::FIRST => new Link('/authors?page=1'),
@@ -183,8 +182,8 @@ class JsonApiViewTest extends TestCase
                 Link::LAST => new Link('/authors?page=9', [
                     'meta' => 'data'
                 ])
-            ]
-        ]);
+            ],
+        ], ['serialize' => true]);
 
         $output = $view->render();
         $output = json_decode($output, true);
@@ -212,8 +211,7 @@ class JsonApiViewTest extends TestCase
             'articles' => $records,
             '_entities' => ['Article'],
             '_url' => 'http://localhost',
-            '_serialize' => true
-        ]);
+        ], ['serialize' => true]);
 
         $this->assertJsonStringEqualsJsonFile(
             ROOT . DS . 'tests' . DS . 'Fixture' . DS . 'articles.json',
@@ -224,8 +222,7 @@ class JsonApiViewTest extends TestCase
             'articles' => $records,
             '_entities' => ['Article'],
             '_url' => 'http://localhost',
-            '_serialize' => ['articles']
-        ]);
+        ], ['serialize' => ['articles']]);
 
         $this->assertJsonStringEqualsJsonFile(
             ROOT . DS . 'tests' . DS . 'Fixture' . DS . 'articles.json',
@@ -241,8 +238,7 @@ class JsonApiViewTest extends TestCase
             'articles' => $records,
             '_entities' => ['Article'],
             '_url' => 'http://localhost',
-            '_serialize' => 'authors'
-        ]);
+        ], ['serialize' => 'authors']);
 
         $output = $view->render();
         $this->assertEquals(['data' => null], json_decode($output, true));
@@ -256,8 +252,7 @@ class JsonApiViewTest extends TestCase
         $view = $this->_getView([
             '_entities' => ['Article'],
             '_url' => 'http://localhost',
-            '_serialize' => $records
-        ]);
+        ], ['serialize' => $records]);
 
         $this->assertJsonStringEqualsJsonFile(
             ROOT . DS . 'tests' . DS . 'Fixture' . DS . 'articles.json',
@@ -289,8 +284,7 @@ class JsonApiViewTest extends TestCase
     {
         $view = $this->_getView([
             '_entities' => ['Article'],
-            '_serialize' => true
-        ]);
+        ], ['serialize' => true]);
         $output = $view->render();
 
         $this->assertEquals(['data' => null], json_decode($output, true));

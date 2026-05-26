@@ -47,13 +47,14 @@ The following view variables can be assigned in your controller
 
 | Variable | Description |
 | --- | --- |
-| `_serialize`| this holds the actual data to pass to the encoder instance, can be an array of entities, a single entity.|
 |`_url`| the base url of the api endpoint |
 |`_entities`|**required** A list of entities that are going to be mapped to Schemas|
 |`_include`| an array of hash paths what should be in the [included](http://jsonapi.org/format/#fetching-includes) section of the response. `[ 'posts.author', 'comments' ]`|
 |`_fieldsets`| A hash path of fields should be in the resultset `[ 'sites'  => ['name'], 'people' => ['first_name'] ]` |
 |`_meta`| meta data to add to the document |
 |`_links`| links to add to the document this should be an array of ``Neomerx\JsonApi\Schema\Link`` objects.|
+
+The `serialize` view builder option specifies the data to pass to the encoder. Set it to `true` to serialize all non-special view vars, a string variable name, or an array of variable names.
 
 #### Example
 
@@ -83,7 +84,7 @@ public function index()
 		->all();
 
 	$this->set(compact('articles'));
-	$this->set('_serialize', true);
+	$this->viewBuilder()->setOption('serialize', true);
 
 	// optional parameters
 	$this->set('_include', [ 'articles', 'articles.comments' ]);
