@@ -33,15 +33,15 @@ class JsonApiView extends View
     /**
      * Constructor
      *
-     * @param \Cake\Http\ServerRequest $request Request instance.
-     * @param \Cake\Http\Response $response Response instance.
-     * @param \Cake\Event\EventManager $eventManager EventManager instance.
+     * @param \Cake\Http\ServerRequest|null $request Request instance.
+     * @param \Cake\Http\Response|null $response Response instance.
+     * @param \Cake\Event\EventManager|null $eventManager EventManager instance.
      * @param array $viewOptions An array of view options
      */
     public function __construct(
-        ServerRequest $request = null,
-        Response $response = null,
-        EventManager $eventManager = null,
+        ?ServerRequest $request = null,
+        ?Response $response = null,
+        ?EventManager $eventManager = null,
         array $viewOptions = []
     ) {
         parent::__construct($request, $response, $eventManager, $viewOptions);
