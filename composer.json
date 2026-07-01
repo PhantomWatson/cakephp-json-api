@@ -20,7 +20,7 @@
     "require": {
         "php": ">=8.0",
         "cakephp/cakephp": "^5.0",
-        "neomerx/json-api": "^4.0",
+        "laravel-json-api/neomerx-json-api": "^5.0",
         "ext-json": "*",
         "ext-mbstring": "*"
     },
